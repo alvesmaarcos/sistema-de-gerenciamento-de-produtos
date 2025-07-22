@@ -6,7 +6,7 @@ function Header() {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Gerenciador de Produtos
+          EduMar Gerenciador de Estoque
         </Typography>
       </Toolbar>
     </AppBar>

@@ -39,7 +39,7 @@ function EditProductPage() {
           setFeedback({ open: true, message: 'Preço é um campo obrigatório.', severity: 'error' });
           return;
       }
-        if (parseFloat(produto.price) <= 0) {
+        if (parseFloat(produto.price) < 0) {
             setFeedback({ open: true, message: 'O preço do produto deve ser maior que zero.', severity: 'error' });
             return;
         }

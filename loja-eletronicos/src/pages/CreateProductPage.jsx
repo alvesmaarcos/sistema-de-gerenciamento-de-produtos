@@ -21,7 +21,7 @@ function CreateProductPage() {
       setFeedback({ open: true, message: 'Nome e Preço são campos obrigatórios.', severity: 'error' });
       return;
     }
-    if (parseFloat(produto.preco) <= 0) {
+    if (parseFloat(produto.preco) < 0) {
       setFeedback({ open: true, message: 'O preço do produto deve ser maior que zero.', severity: 'error' });
       return;
     }

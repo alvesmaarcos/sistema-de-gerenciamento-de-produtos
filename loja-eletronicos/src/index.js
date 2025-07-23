@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import CreateProductPage from './pages/CreateProductPage'; // Vamos criar esta página a seguir
 import './index.css';
 
+import EditProductPage from './pages/EditProductPage'
 // Cria o nosso roteador com as páginas da aplicação
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/cadastrar",
     element: <CreateProductPage />,
+  },
+  {
+    path: "/editar/:id",
+    element: <EditProductPage />,
   },
 ]);
 

@@ -1,45 +1,44 @@
+// src/pages/CreateProductPage.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Header from '../components/layout/Header';
-import { Container, Typography, TextField, Button, Box } from '@mui/material';
+import { Container, Typography, TextField, Button, Box, Snackbar, Alert } from '@mui/material';
 import { adicionarProduto } from '../services/mockapi';
 
 function CreateProductPage() {
-  const navigate = useNavigate();
   const [produto, setProduto] = useState({
-    nome: '',
-    preco: '',
-    estoque: '',
-    categoria: '',
-    descricao: '',
-    imagem: ''
+    nome: '', preco: '', estoque: '', categoria: '', descricao: '', imagem: ''
   });
-
+  const [feedback, setFeedback] = useState({ open: false, message: '', severity: 'info' });
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduto(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    setProduto(prevState => ({ ...prevState, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Verificando produto:', produto);
+    if (!produto.nome.trim() || !produto.preco) {
+      setFeedback({ open: true, message: 'Nome e Preço são campos obrigatórios.', severity: 'error' });
+      return;
+    }
+    if (parseFloat(produto.preco) <= 0) {
+      setFeedback({ open: true, message: 'O preço do produto deve ser maior que zero.', severity: 'error' });
+      return;
+    }
+
     try {
-      // Prepara o objeto para a API, convertendo os números
       const produtoParaEnviar = {
         ...produto,
         preco: parseFloat(produto.preco),
-        estoque: parseInt(produto.estoque, 10),
-        disponivel: true // Definimos como disponível por padrão
+        estoque: parseInt(produto.estoque, 10) || 0,
+        disponivel: true
       };
-
       await adicionarProduto(produtoParaEnviar);
-      alert('Produto cadastrado com sucesso!');
-      navigate('/'); // Redireciona para a página inicial
+      setFeedback({ open: true, message: 'Produto cadastrado com sucesso!', severity: 'success' });
+      setProduto({ nome: '', preco: '', estoque: '', categoria: '', descricao: '', imagem: '' });
     } catch (error) {
       console.error('Erro ao cadastrar produto:', error);
-      alert('Falha ao cadastrar o produto.');
+      setFeedback({ open: true, message: 'Falha ao cadastrar o produto. Tente novamente.', severity: 'error' });
     }
   };
 
@@ -62,6 +61,12 @@ function CreateProductPage() {
           </Button>
         </Box>
       </Container>
+      
+      <Snackbar open={feedback.open} autoHideDuration={6000} onClose={() => setFeedback({ ...feedback, open: false })}>
+        <Alert onClose={() => setFeedback({ ...feedback, open: false })} severity={feedback.severity} sx={{ width: '100%' }}>
+          {feedback.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

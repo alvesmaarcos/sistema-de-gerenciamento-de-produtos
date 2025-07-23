@@ -14,7 +14,6 @@ export async function buscarProdutos() {
     }));
 }
 
-//Cadastrar o produto
 export async function adicionarProduto(produto) {
     const response = await fetch(API_URL, {
       method: 'POST',
@@ -32,5 +31,21 @@ export async function adicionarProduto(produto) {
       })
     });
     
+    return await response.json();
+  }
+
+  export async function buscarProdutoPorId(id) {
+    const response = await fetch(`${API_URL}/${id}`);
+    return await response.json();
+  }
+  
+  export async function editarProduto(id, produto) {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(produto)
+    });
     return await response.json();
   }
